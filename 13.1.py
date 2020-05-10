@@ -1,7 +1,7 @@
 import sqlite3
 import re
 
-conn = sqlite3.connect('emaildb.sqlite')
+conn = sqlite3.connect('emailorgdb.sqlite')
 cur = conn.cursor()
 
 cur.execute('DROP TABLE IF EXISTS Counts')
@@ -14,7 +14,7 @@ if (len(fname) < 1): fname = 'mbox.txt'
 fh = open(fname)
 for line in fh:
     if not line.startswith('From: '): continue
-    pieces = re.findall('@(\w*\D\w*)', line)
+    pieces = re.findall('@(.*)\s', line)
     org = pieces[0]
     cur.execute('SELECT count FROM Counts WHERE org = ? ', (org,))
     row = cur.fetchone()
